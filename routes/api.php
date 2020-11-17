@@ -17,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/direct/wallet/funding', [App\Http\Controllers\WebhookResponseControllers\WebhookResponseController::class, 'connectPayant'])->name('/direct/wallet/funding');
