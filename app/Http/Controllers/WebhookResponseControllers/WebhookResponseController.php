@@ -5,6 +5,8 @@ namespace App\Http\Controllers\WebhookResponseControllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\WebhookResponse;
+use App\Models\User;
+use App\Models\Wallet;
 
 
 class WebhookResponseController extends Controller
@@ -23,6 +25,11 @@ class WebhookResponseController extends Controller
 		$accountNumber = $request->input('account.accountNumber');
 		$paymentDescription = $request->input('narration', 'Direct Account');
 
+		//Log Payment To Table
+		$verify = WebhookResponse::firstWhere("exchanger_reference", $paymentReference);
+		if($verify){
+			return response()->json(["status"=>"Transaction Treated"], 300);
+		}
 		WebhookResponse::create([
 			"amount" => $amountPaid,
     		"userid" => $accountReference,
@@ -33,6 +40,13 @@ class WebhookResponseController extends Controller
     		"exchanger_reference" => $paymentReference
 		]);
 
+		//Get User with Account Details
+		$userD = User::where("user_account", $accountNumber)->get();
+		$user = $userD[0];
+
+		$wallet = Wallet::where("userid", $user->userid)->get();
+
+		Wallet::where("userid", $user->userid)->update(["wallet_balance"=>$amountPaid + $wallet[0]['wallet_balance'] ]);
 		return response()->json(["status"=>"successful"], 200);
     }
 }
