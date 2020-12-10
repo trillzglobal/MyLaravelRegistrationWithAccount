@@ -36,8 +36,34 @@ class ApiController extends Controller
 		        $resp['bank_name'] = "STERLING BANK";
 
 		    }
+        else{
+          $resp  = false;
+        }
 
 		    return $resp;
+   }
+
+   public function airvendTransaction(array $input)
+   {
+   		$url = "http://test.airvendng.net/secured/seamless/vend/";
+		$username = "admin";
+		$password = "admin";
+		$hash_key ="AXUNEOk4ks24352$%#w2323";
+		$content = array("details"=>$input);
+		$content = json_encode($content);
+		$hash = $content.$hash_key;
+		$hash = hash("sha512", $hash);
+		//$content = json_encode($content);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json","username:$username","password:$password","hash:$hash"));     
+        	curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$content);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return $response;
    }
 
 

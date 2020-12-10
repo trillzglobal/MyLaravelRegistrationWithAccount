@@ -18,12 +18,13 @@ class CreateTransactionTablesTable extends Migration
             $table->string('userid');
             $table->integer('networkid');
             $table->string('amount');
-            $table->string('incentive');
-            $table->string('commission');
-            $table->string('referral_bonus');
+            $table->string('incentive')->nullable();
+            $table->string('commission')->nullable();
+            $table->string('referral_bonus')->nullable();
             $table->string('msisdn');
-            $table->text('response');
-            $table->string('sessionid');
+            $table->string('et');
+            $table->text('response')->nullable();
+            $table->string('sessionid')->nullable();
             $table->string('pin');
             $table->integer('status');
             $table->string('serial');

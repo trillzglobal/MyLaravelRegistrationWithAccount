@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\ApiControllers\ApiController;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\BaseIncentive;
+use App\Models\BaseCommission;
+use App\Models\IncentiveTable;
+use App\Models\CommissionTable;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -78,8 +82,33 @@ class RegisterController extends Controller
                 ];
 
         $output = $vas->createAccount($payload);
+
+        $userid = uniqid();
+
+        $incentive = BaseIncentive::all();
+        $commission = BaseCommission::first();
+
+        print_r($incentive);
+        exit();
+
+        $usercomm = new CommissionTable;
+        $usercomm->userid = $userid;
+        $usercomm->commission = $commission->commission;
+        $usercomm->save();
+
+        foreach($incentive as $inc)
+        {
+            $userinc = new IncentiveTable;
+
+            $userinc->userid = $userid;
+            $userinc->networkid = $inc->networkid;
+            $userinc->incentive = $inc->incentive;
+
+            $userinc->save();
+        }
+
         return User::create([
-            'userid' => uniqid(),
+            'userid' => $userid,
             'email' => $data['email'],
             'first_name'=> $data['first_name'],
             'last_name'=>$data['last_name'],

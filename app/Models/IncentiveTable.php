@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class IncentiveTable extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+
+    	"userid",
+    	"incentive",
+    	"networkid"
+    ];
 }

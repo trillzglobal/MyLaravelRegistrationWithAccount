@@ -7,6 +7,10 @@ use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ApiControllers\ApiController;
+use App\Models\BaseCommission;
+use App\Models\BaseIncentive;
+use App\Models\CommissionTable;
+use App\Models\IncentiveTable;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
@@ -22,10 +26,10 @@ class ApiAuthController extends Controller
     	$rules = [
             'first_name'=>['required', 'string', 'max:255'],
             'last_name'=>['required', 'string', 'max:255'],
-            'phone_number'=>['required', 'string', 'max:15', 'unique:users'],
+            'phone_number'=>['required', 'max:15', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
-            'dob' => ['date_format:Y-m-d','before:8 years'],
+            'dob' => ['date_format:Y-m-d','before:12 years'],
             'gender' => ['required']
         ];
 
@@ -34,15 +38,18 @@ class ApiAuthController extends Controller
         	"last_name"=> "Last Name Must be String below 255 Characters",
         	"email.unique" => "Email is already registered.",
         	"email.min" => "Password must be 8 digit and above",
-        	"dob.before"=> "You must be above 8 years to register"
+        	"dob.before"=> "You must be above 12 years to register"
 
         ];
     	
     	$validator = Validator::make($request->all(), $rules, $message);
 
+        
+
+
     	if($validator->fails()){
     		$errors = $validator->errors();
-    		return response()->json($errors,302);
+    		return response()->json(["status"=>"error", "error"=>$errors],200);
     	}
 
     		
@@ -53,6 +60,7 @@ class ApiAuthController extends Controller
                 ];
        
         $output = $vas->createAccount($payload);
+        if($output == false)return response()->json(["status"=>"error", "error"=>"Can't Create account at the moment"],200);
         $user = new User([
             'userid' => uniqid(),
             'email' => $request->input('email'),
@@ -73,18 +81,59 @@ class ApiAuthController extends Controller
 
         $user->save();
 
+
         $wallet = new Wallet([
         	'userid' => $user->userid,
         	'wallet_balance'=>'0',
-        	'bonus_balance'=>'0',
-        	'referral_balance'=>'0'
+        	'commission_balance'=>'0',
+        	'incentive_balance'=>'0'
         ]);
 
         $wallet->save();
 
+
+        $incentive = BaseIncentive::all();
+        $commission = BaseCommission::first();
+
+
+        $usercomm = new CommissionTable;
+        $usercomm->userid = $user->userid;
+        $usercomm->commission = $commission->commission;
+        $usercomm->save();
+
+        foreach($incentive as $inc)
+        {
+            $userinc = new IncentiveTable;
+
+            $userinc->userid = $user->userid;
+            $userinc->networkid = $inc->networkid;
+            $userinc->incentive = $inc->incentive;
+
+            $userinc->save();
+        }
+
         return response()->json(["status"=>"success", "message"=>"user registered successfully. Kindly Login to your mail to activate ".$request->email], 200);
 
 
+    }
+
+    public function profile (Request $request){
+
+        $user = $request->user();
+         $wallet = Wallet::where('userid', $user->userid)->first();
+       
+        $user->wallet = $wallet->wallet_balance;
+        $user->incentive = $wallet->incentive_balance;
+        $user->commission = $wallet->commission_balance;
+ 
+        return response()->json(["status"=>"success",
+            "user"=>$user
+        ], 200);
+    }
+
+    public function tokenStatus(Request $request){
+
+        return response()->json(["status"=>"success", "userid"=> $request->user()->userid], 200);
     }
 
     public function login (Request $request)
@@ -97,34 +146,34 @@ class ApiAuthController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()){
-        	$error = $validator->errors();
-        	return response()->json($error, 401);
+        	$errors = $validator->errors();
+        	return response()->json(["status"=>"error", "error"=>$errors],200);
         }
  
         $credentials = request(['email', 'password']);
  
         if(!Auth::attempt($credentials)){
             return response()->json([
-                'message'=> 'Invalid email or password'
-            ], 401);
+                'status'=>'error','message'=> 'Invalid email or password'
+            ], 200);
         }
  
         $user = $request->user();
  
         $token = $user->createToken('Access Token');
 
-        $wallet = Wallet::where('userid', $user->userid)->get();
+        $wallet = Wallet::where('userid', $user->userid)->first();
 
-        if(is_array($wallet)){$data = $wallet[0];}
+        
 
        
-        $user->wallet = $data->wallet_balance;
-        $user->bonus = $data->bonus_balance;
-        $user->referral = $data->referral_balance;
+        $user->wallet = $wallet->wallet_balance;
+        $user->incentive = $wallet->incentive_balance;
+        $user->commission = $wallet->commission_balance;
 
         $user->access_token = $token->accessToken;
  
-        return response()->json([
+        return response()->json(["status"=>"success",
             "user"=>$user
         ], 200);
 

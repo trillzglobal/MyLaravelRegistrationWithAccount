@@ -39,7 +39,7 @@ class Handler extends ExceptionHandler
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         //if ($request->expectsJson()) {
-            return response()->json(['error' => 'Authentication Failed. Kindly Login Again'], 401);
+            return response()->json(['error' => 'Authentication Failed. Kindly Login Again'], 200);
         //}
 
         //return redirect()->guest(route('login'));

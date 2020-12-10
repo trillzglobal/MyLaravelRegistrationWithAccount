@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CommissionTable;
 use App\Models\IncentiveTable;
 use App\Models\PinNumber;
+use App\Models\PinDataInfo;
 use App\Models\PinPrice;
 use App\Models\TransactionTable;
 use App\Models\TransactionPin;
@@ -28,7 +29,7 @@ class UserInformation extends Controller
     	$value = [];
 
     	foreach($values as $v){
-    		$value[] = $v['number'];
+    		$value[] = $v['price'];
     	}
 
 
@@ -41,6 +42,17 @@ class UserInformation extends Controller
         $userid = $request->user()->userid;
         $trans = TransactionPin::where("userid", $userid)->orderBy('created_at', 'DESC')->get();
 
+         foreach($trans as $transaction)
+        {
+            $ref = $transaction->ref_tag;
+            $used = PinDataInfo::where("userid", $userid)
+                                        ->where("ref_tag",$ref)
+                                        ->where("status", 0)
+                                        ->count();
+            $transaction->used = $used;
+        }
+
+
         return response()->json(["transactions"=>$trans]);
 
 
@@ -52,6 +64,7 @@ class UserInformation extends Controller
     	$userid = $request->user()->userid;
 
     	$transactions = TransactionTable::where("userid", $userid)->get();
+
 
     	return response()->json(["transactions"=>$transactions], 200);
 
@@ -66,6 +79,63 @@ class UserInformation extends Controller
         $commission = CommissionTable::where("userid", $userid)->first();
 
         return response()->json(["incentive"=>$incentive, "commission"=>$commission]);
+
+    }
+
+    public function transactionSummary(Request $request)
+    {
+        $userid = $request->user()->userid;
+
+        $mno = ["airtel"=>1,"mtn"=>2, "glo"=>3,"9mobile"=>4];
+
+        $sum_sales = $sum_incentive = [];
+        foreach($mno as $key=>$m)
+        {
+            $sum_mno = TransactionTable::where('userid', $userid)
+                                        ->where('status',0)
+                                        ->where('networkid', $m)
+                                        ->where('created_at', '>=', date('Y-m'))
+                                        ->where('created_at', '<', date('Y-m', strtotime("+1 month")))
+                                        ->sum('amount');
+
+            $sum_sales[$key] = $sum_mno;
+            $sum_inc = TransactionTable::where('userid', $userid)
+                                        ->where('status',0)
+                                        ->where('networkid', $m)
+                                        ->where('created_at', '>=', date('Y-m'))
+                                        ->where('created_at', '<', date('Y-m', strtotime("+1 month")))
+                                        ->sum('incentive');
+
+            $sum_incentive[$key] = $sum_inc;
+        }
+
+        $pDay = date('Y-m-d');
+
+        $fDay = date('Y-m-01');
+        
+
+        $currentDate = $fDay;
+
+        $daily = [];
+        $d = 1;
+        $i = 1;
+        
+        while($currentDate <= $pDay)
+        {   
+            $daily_sum = TransactionTable::where('userid', $userid)
+                                        ->where('status',0)
+                                        ->where('created_at', '>=', $currentDate)
+                                        ->where('created_at', '<', date("Y-m-d", strtotime($currentDate." +1 day")))
+                                        ->sum('amount');
+            
+            $currentDate = date("Y-m-d", strtotime($currentDate." +1 day"));
+
+            $daily["day ".$i]= $daily_sum;
+            $i++;
+
+        }
+
+        return response()->json(["mno_sales"=>$sum_sales, "mno_incentive"=>$sum_incentive, "daily"=>$daily], 200);
 
     }
 

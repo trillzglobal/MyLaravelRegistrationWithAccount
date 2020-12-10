@@ -45,7 +45,7 @@ class TransactionPinController extends Controller
 
 		if($total > $init_balance)
 		{
-			return response()->json(["error"=>"Balance is too low for transaction", "balance"=>$init_balance], 401);
+			return response()->json(["status"=>"error", "error"=>"Balance is too low for transaction", "balance"=>$init_balance], 200);
 		}
 
 		//Count Available Pins in PIN Bucket
@@ -54,7 +54,7 @@ class TransactionPinController extends Controller
 		
 		if($count < $value)
 		{
-			return response()->json(["error"=>"Requested Number of PIN Can't Be Purchased Now", "available"=>$count], 401);
+			return response()->json(["status"=>"error", "error"=>"Requested Number of PIN Can't Be Purchased Now", "available"=>$count], 200);
 		}
 
 		//Get PIN From PIN Bucket
@@ -65,18 +65,18 @@ class TransactionPinController extends Controller
 		//Subtract Payment and Calculate Commission
 
 		$comm = Commission::where("userid", $userid)->first();
-		$uComm = $comm->commission;
+		$uComm = $comm->commission_balance;
 
 		$final_balance = $init_balance - $total;
 		$pComm = $total * $uComm / 100 ;
 
-		$final_commission = $balance->commission + $pComm;
+		$final_commission = $balance->commission_balance + $pComm;
 
 		//Update Wallet Balances
 
 		$upUser = Wallet::where("userid", $userid)->first();
 
-		$upUser->referral_balance =  $final_commission;
+		$upUser->commission_balance =  $final_commission;
 		$upUser->wallet_balance = $final_balance;
 
 		$upUser->save();
@@ -130,7 +130,7 @@ class TransactionPinController extends Controller
 
 		$transPin->save();
 		
-		return response()->json(["success"=>"Pin purchased Successfully", "pins"=>$pins],200);
+		return response()->json(["status"=>"success", "success"=>"Pin purchased Successfully", "pins"=>$pins],200);
 
 
 	}
@@ -144,11 +144,69 @@ class TransactionPinController extends Controller
 
 		if(empty($details))
 		{
-			return response()->json(["message"=>"No Transaction for this Reference"], 401);
+			return response()->json(["status"=>"error", "message"=>"No Transaction for this Reference"], 200);
 
 		}
 
-		return response()->json(["details"=>$details]);
+		return response()->json(["status"=>"success", "details"=>$details]);
+	}
+
+
+	public function withdraw(Request $request)
+	{
+		$userid = $request->user()->userid;
+
+		$rules = [
+			"name" => ['required', 'string'],
+			"amount"=> ['required']
+		];
+
+		$validator = Validator::make($request->all(),$rules);
+
+		if($validator->fails())
+		{
+			$errors = $validator->errors();
+    		return response()->json(["status"=>"error", "error"=>$errors],200);
+		}
+
+		$name =  $request->name;
+		$amount = $request->amount;
+
+		if($name == "incentive")
+		{
+			$inc = Wallet::where("userid", $userid)->first();
+
+			if($inc->incentive_balance >= $amount )
+			{
+				$inc->wallet_balance = $inc->wallet_balance + $amount;
+				$inc->incentive_balance = $inc->incentive_balance - $amount;
+
+				$inc->save();
+				return response()->json(["status"=>"success","message"=>"Successful withdrawal of Incentive"], 200);
+			}
+			else{
+				return response()->json(["status"=>"error","error"=>"Balance low for requested Amount"], 200);
+			}
+		}
+		elseif($name == "commission")
+		{
+			$inc = Wallet::where("userid", $userid)->first();
+
+			if($inc->commission_balance >= $amount )
+			{
+				$inc->wallet_balance = $inc->wallet_balance + $amount;
+				$inc->commission_balance = $inc->commission_balance - $amount;
+
+				$inc->save();
+				return response()->json(["status"=>"success","message"=>"Successful withdrawal of Incentive"], 200);
+			}
+			else{
+				return response()->json(["status"=>"error","error"=>"Balance low for requested Amount"], 200);
+			}
+		}
+		else{
+			return response()->json(["status"=>"error","error"=>"Unknown Value to be Withdrawn"], 200);
+		}
 	}
 
 }
