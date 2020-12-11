@@ -37,7 +37,7 @@ class PayantCallController extends Controller
 
 	public function confirmTransactionPayant($ref){
 	    $hash = $this->payantLogin();
-	    $organizationId = env('pyt_organizationId');
+	    $organizationId = config('app.PYT_ORGANIZATIONID');
 
 	    $endpoint = "accounts/transactions/".$ref;
 	   
@@ -60,19 +60,19 @@ class PayantCallController extends Controller
 
 	public function reserveAccountPayant($details){
 	    $hash = $this->payantLogin();
-	    $organizationId = $_ENV['PYT_ORGANIZATIONID'];
+	    $organizationId = config('app.PYT_ORGANIZATIONID');
 	    $endpoint = "accounts";
-	    $details['country'] = $_ENV['PYT_COUNTRY'];
-	    $details['currency'] = $_ENV['PYT_CURRENCY'];
+	    $details['country'] = config('app.PYT_COUNTRY');
+	    $details['currency'] = config('app.PYT_CURRENCY');
 	    $details['type'] = "RESERVED";
-	    $details['bankCode'] = $_ENV['PYT_BANKCODE'];
+	    $details['bankCode'] = config('app.PYT_BANKCODE');
 	    $details['accountName'] = $details["customer"]["name"];
 	   
 	    $content = json_encode($details);
 
 
 	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $_ENV['PYT_BANK_BASEURL'].$endpoint);
+	    curl_setopt($ch, CURLOPT_URL, config('app.PYT_BANK_BASEURL').$endpoint);
 	    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer {$hash}","Content-Type: application/json", "OrganizationID: {$organizationId}"));
 	    curl_setopt($ch, CURLOPT_POST, 1);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
@@ -84,9 +84,9 @@ class PayantCallController extends Controller
 
 	//Card Payment. White Labelled.
 	private function paymentCall($payload, $endpoint){
-		$pyt = $_ENV['PYT_PRIVATEKEY'];
+		$pyt = config('app.PYT_PRIVATEKEY');
 		 $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $_ENV['PYT_CARD_BASEURL'].$endpoint);
+	    curl_setopt($ch, CURLOPT_URL, config('app.PYT_CARD_BASEURL').$endpoint);
 	    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer {$pyt}","Content-Type: application/json"));
 	    curl_setopt($ch, CURLOPT_POST, 1);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
