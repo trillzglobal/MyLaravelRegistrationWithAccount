@@ -29,9 +29,8 @@ class PayantCallController extends Controller
 	    curl_close($ch);
 	    $out = json_decode($response, false);
 
-	    //$hashKey = $out->data->token;
-	    print_r($bankurl." ".$data['username']." ".$endpoint);
-	    exit();
+	    $hashKey = $out->data->token;
+	   
 	    return $hashKey;
 	}
 
