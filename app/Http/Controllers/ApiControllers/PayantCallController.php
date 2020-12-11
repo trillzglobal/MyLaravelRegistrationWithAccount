@@ -30,7 +30,7 @@ class PayantCallController extends Controller
 	    $out = json_decode($response, false);
 
 	    //$hashKey = $out->data->token;
-	    print_r($bankurl." ".$content);
+	    print_r($bankurl." ".$content." ".$endpoint);
 	    exit();
 	    return $hashKey;
 	}
