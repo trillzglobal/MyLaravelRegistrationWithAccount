@@ -29,8 +29,8 @@ class PayantCallController extends Controller
 	    curl_close($ch);
 	    $out = json_decode($response, false);
 
-	    $hashKey = $out->data->token;
-	    print_r($hashkey);
+	    //$hashKey = $out->data->token;
+	    print_r($response);
 	    exit();
 	    return $hashKey;
 	}
