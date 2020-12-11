@@ -14,7 +14,7 @@ use App\Models\TransactionPin;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class UserInformation extends Controller
+class UserInformationController extends Controller
 {
     //Get Pin Number allowed and Amount Allowed
 
