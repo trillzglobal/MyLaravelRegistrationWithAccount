@@ -16,6 +16,24 @@ return [
     'name' => env('APP_NAME', 'Laravel'),
 
     /*
+
+    Payant Details
+    */
+
+    'PYT_ORGANIZATIONID'=> env('PYT_ORGANIZATIONID'),
+    'PYT_USERNAME' => env('PYT_USERNAME'),
+    'PYT_PASSWORD'=> env('PYT_PASSWORD'),
+    'PYT_BANK_BASEURL'=> env('PYT_BANK_BASEURL');
+    'PYT_COUNTRY'=>env('PYT_COUNTRY'),
+    'PYT_CURRENCY'=>env('PYT_CURRENCY'),
+    'PYT_BANKCODE'=>env('PYT_BANKCODE'), 
+    'PYT_PRIVATEKEY'=>env('PYT_PRIVATEKEY'), 
+    'PYT_PUBLICKEY '=>env('PYT_PUBLICKEY '), 
+    'PYT_CARD_BASEUR'=>env('PYT_CARD_BASEUR'), 
+    'PYT_CARD_BASEURL'=>env('PYT_CARD_BASEURL'),
+
+
+    /*
     |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------

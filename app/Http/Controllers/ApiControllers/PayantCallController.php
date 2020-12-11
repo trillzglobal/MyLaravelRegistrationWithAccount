@@ -14,9 +14,9 @@ class PayantCallController extends Controller
 
 	    $endpoint = "oauth/token";
 	    $data = array(
-	                "username"=>env('PYT_USERNAME'),
-	                "password"=>env('PYT_PASSWORD'));
-	    $bankurl = env('PYT_BANK_BASEURL');
+	                "username"=>config('PYT_USERNAME'),
+	                "password"=>config('PYT_PASSWORD'));
+	    $bankurl = config('PYT_BANK_BASEURL');
 	    $content = json_encode($data);
 	    
 	    $ch = curl_init();
