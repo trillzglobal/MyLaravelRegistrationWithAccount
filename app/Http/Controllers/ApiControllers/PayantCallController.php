@@ -30,7 +30,8 @@ class PayantCallController extends Controller
 	    $out = json_decode($response, false);
 
 	    $hashKey = $out->data->token;
-	    
+	    print_r($hashkey);
+	    exit();
 	    return $hashKey;
 	}
 
