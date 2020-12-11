@@ -16,10 +16,11 @@ class PayantCallController extends Controller
 	    $data = array(
 	                "username"=>env('PYT_USERNAME'),
 	                "password"=>env('PYT_PASSWORD'));
+	    $bankurl = env('PYT_BANK_BASEURL');
 	    $content = json_encode($data);
 	    
 	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, env('PYT_BANK_BASEURL').$endpoint);
+	    curl_setopt($ch, CURLOPT_URL, $bankurl.$endpoint);
 	    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
 	    curl_setopt($ch, CURLOPT_POST, 1);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
