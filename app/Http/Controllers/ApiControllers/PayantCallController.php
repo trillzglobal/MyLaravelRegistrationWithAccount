@@ -14,9 +14,9 @@ class PayantCallController extends Controller
 
 	    $endpoint = "oauth/token";
 	    $data = array(
-	                "username"=>config('PYT_USERNAME'),
-	                "password"=>config('PYT_PASSWORD'));
-	    $bankurl = config('PYT_BANK_BASEURL');
+	                "username"=>config('app.PYT_USERNAME'),
+	                "password"=>config('app.PYT_PASSWORD'));
+	    $bankurl = config('app.PYT_BANK_BASEURL');
 	    $content = json_encode($data);
 	    
 	    $ch = curl_init();
@@ -42,7 +42,7 @@ class PayantCallController extends Controller
 	    $endpoint = "accounts/transactions/".$ref;
 	   
 	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $_ENV['PYT_BANK_BASEURL'].$endpoint);
+	    curl_setopt($ch, CURLOPT_URL, $bankurl.$endpoint);
 	    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer {$hash}","Content-Type: application/json", "OrganizationID: {$organizationId}"));
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	    $response = curl_exec($ch);
