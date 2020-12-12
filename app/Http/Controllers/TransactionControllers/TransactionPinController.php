@@ -142,7 +142,7 @@ class TransactionPinController extends Controller
 					->where('ref_tag', $ref_id)
 					->get();
 
-		if(empty($details))
+		if(sizeof($details)==0)
 		{
 			return response()->json(["status"=>"error", "message"=>"No Transaction for this Reference"], 200);
 
