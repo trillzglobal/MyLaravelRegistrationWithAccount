@@ -34,6 +34,15 @@ return [
 
 
     /*
+    AIRVEND
+    */
+
+    'AIR_USERNAME'=>env('AIR_USERNAME'),
+    'AIR_PASSWORD'=>env('AIR_PASSWORD'),
+    'AIR_KEY'=>env('AIR_KEY'),
+    'AIR_URL'=>env('AIR_URL'),
+
+    /*
     |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------

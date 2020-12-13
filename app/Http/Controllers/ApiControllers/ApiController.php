@@ -45,10 +45,10 @@ class ApiController extends Controller
 
    public function airvendTransaction(array $input)
    {
-   		$url = "http://test.airvendng.net/secured/seamless/vend/";
-		$username = "admin";
-		$password = "admin";
-		$hash_key ="AXUNEOk4ks24352$%#w2323";
+   		$url = config('app.AIR_URL');
+		$username = config('app.AIR_USERNAME');
+		$password = config('app.AIR_USERNAME');
+		$hash_key =config('app.PYT_KEY');
 		$content = array("details"=>$input);
 		$content = json_encode($content);
 		$hash = $content.$hash_key;
