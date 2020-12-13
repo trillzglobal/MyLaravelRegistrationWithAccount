@@ -9,7 +9,7 @@ class PinBucket extends Model
 {
     use HasFactory;
 
-    private $fillable =[
+    protected $fillable =[
     	"pin", "value", "bought_by", "status", "time_bought", "ref_tag"
     ];
 }

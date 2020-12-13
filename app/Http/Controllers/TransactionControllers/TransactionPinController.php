@@ -136,10 +136,7 @@ class TransactionPinController extends Controller
 	}
 
 	private function randomPin(){
-		$min=100000000000;
-		$max = 999999999999;
-	   
-	   
+	
 		$min=100000000000;
 		$max = 999999999999;
 	    $pin = random_int($min,$max);
@@ -152,10 +149,10 @@ class TransactionPinController extends Controller
 		//Get Request Value
 		
 		$number = $id;
-
+		$i = 0;
 		while($i < $number)
 		{
-			$pin = this->randomPin();
+			$pin = $this->randomPin();
 
 			$status = new PinBucket;
 
@@ -167,6 +164,8 @@ class TransactionPinController extends Controller
 				$i = $i + 1;
 			}
 		}
+
+		return response()->json(["status"=>"success"], 200);
 	}
 
 
