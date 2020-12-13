@@ -22,6 +22,8 @@ Route::middleware('storeRequest')->group(function(){
 
     Route::any('/ussd/v1/request', [App\Http\Controllers\RechargeControllers\RechargeController::class, 'Recharge']);
 
+    Route::post('pin/generate/{id}', [App\Http\Controllers\TransactionControllers\TransactionPinController::class, 'pinGenerate']); 
+
  
     Route::prefix('auth')->group(function(){
     	Route::post('signup/user', [App\Http\Controllers\ApiAuthController::class, 'signup']);

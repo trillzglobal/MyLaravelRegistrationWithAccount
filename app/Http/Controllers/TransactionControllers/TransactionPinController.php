@@ -147,11 +147,11 @@ class TransactionPinController extends Controller
 	    return $pin;
 	}
 
-	public function pinGenerate(Request $request)
+	public function pinGenerate(Request $request, $id)
 	{
 		//Get Request Value
-		$amount = $request->amount;
-		$number = $request->number;
+		
+		$number = $id;
 
 		while($i < $number)
 		{
