@@ -135,6 +135,40 @@ class TransactionPinController extends Controller
 
 	}
 
+	private function randomPin(){
+		$min=100000000000;
+		$max = 999999999999;
+	   
+	   
+		$min=100000000000;
+		$max = 999999999999;
+	    $pin = random_int($min,$max);
+
+	    return $pin;
+	}
+
+	public function pinGenerate(Request $request)
+	{
+		//Get Request Value
+		$amount = $request->amount;
+		$number = $request->number;
+
+		while($i < $number)
+		{
+			$pin = this->randomPin();
+
+			$status = new PinBucket;
+
+			$status->pin = $pin;
+			$status->status = 1;
+
+			if($status->save())
+			{
+				$i = $i + 1;
+			}
+		}
+	}
+
 
 	public function pinSearch(Request $request, $ref_id)
 	{
