@@ -64,8 +64,10 @@ class TransactionPinController extends Controller
 
 		//Subtract Payment and Calculate Commission
 
-		$comm = Commission::first();
-		$uComm = $comm->commission_balance;
+		$comm = Commission::where("userid", $userid)->first();
+
+
+		$uComm = $comm->commission;
 
 		$final_balance = $init_balance - $total;
 		$pComm = $total * $uComm / 100 ;
@@ -130,7 +132,7 @@ class TransactionPinController extends Controller
 
 		$transPin->save();
 		
-		return response()->json(["status"=>"success", "success"=>"Pin purchased Successfully", "pins"=>$pins],200);
+		return response()->json(["status"=>"success", "success"=>"Pin purchased Successfully", "ref_tag"=>$ref_tag, "pins"=>$pins],200);
 
 
 	}
