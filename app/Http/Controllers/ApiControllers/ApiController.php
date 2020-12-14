@@ -48,7 +48,7 @@ class ApiController extends Controller
    		$url = config('app.AIR_URL');
 		$username = config('app.AIR_USERNAME');
 		$password = config('app.AIR_PASSWORD');
-		$hash_key =config('app.PYT_KEY');
+		$hash_key =config('app.AIR_KEY');
 		$content = array("details"=>$input);
 		$content = json_encode($content);
 		$hash = $content.$hash_key;
