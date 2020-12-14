@@ -22,17 +22,17 @@ class ApiController extends Controller
 
    public function  createAccount(array $input){
 
-	   	$create = array("name"=> $input["name"],
-	                        "email"=> $input["email"],
+	   	$create = array("accountName"=> $input["name"],
+	                        "customerEmail"=> $input["email"],
 	                        "phoneNumber"=> $input['phone_number'],
-	                        "sendNotifications"=> false);
-	        $detail = array("customer"=>$create);
+	                        "accountReference"=> $input['phone_number']);
+	        $detail = $create;
 	        $response = (new PayantCallController)->reserveAccountPayant($detail);
 	        $output = json_decode($response, true);
 
 	        if($output['statusCode'] == 200){
 
-		        $resp['account_number'] = $output['data']['accountNumber'];
+		        $resp['account_number'] = $output['accountNumber'];
 		        $resp['bank_name'] = "STERLING BANK";
 
 		    }

@@ -17,12 +17,12 @@ class WebhookResponseController extends Controller
     public function connectPayant(Request $request)
     {
 
-		$paymentReference = $request->paymentReference;
-		$amountPaid = $request->amount;
-		$paidOn = $request->createdAt;
+		$paymentReference = $request->transactionReference;
+		$amountPaid = $request->amountPaid;
+		$paidOn = $request->date;
 		$paymentStatus = $request->input('status', '1');
-		$accountReference = $request->input('account.customer._id');
-		$accountNumber = $request->input('account.accountNumber');
+		$accountReference = $request->transactionReference;
+		$accountNumber = $request->accountNumber;
 		$paymentDescription = $request->input('narration', 'Direct Account');
 
 		//Log Payment To Table

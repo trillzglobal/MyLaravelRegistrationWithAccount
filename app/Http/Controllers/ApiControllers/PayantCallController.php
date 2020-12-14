@@ -58,27 +58,22 @@ class PayantCallController extends Controller
 	//To create Account Number for Payant
 
 	public function reserveAccountPayant($details){
-	    $hash = $this->payantLogin();
-	    $organizationId = config('app.PYT_ORGANIZATIONID');
-	    $endpoint = "accounts";
-	    $details['country'] = config('app.PYT_COUNTRY');
-	    $details['currency'] = config('app.PYT_CURRENCY');
-	    $details['type'] = "RESERVED";
-	    $details['bankCode'] = config('app.PYT_BANKCODE');
-	    $details['accountName'] = $details["customer"]["name"];
-	   
-	    $content = json_encode($details);
-
+	    $url = "http://api.airvendng.net/payantConnect/reserveAccount/"; //Your Serverside url
+	    $appID = "001"; //ID set on ra_vendors
+	    $hashKey="123412341234"; //HASH set on ra_Vendor
+	    
+	    $content =  json_encode($details);
 
 	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, config('app.PYT_BANK_BASEURL').$endpoint);
-	    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer {$hash}","Content-Type: application/json", "OrganizationID: {$organizationId}"));
+	    curl_setopt($ch, CURLOPT_URL, $url);
+	    curl_setopt($ch, CURLOPT_HTTPHEADER, array("hashKey: $hashKey","privateID: $appID"));
 	    curl_setopt($ch, CURLOPT_POST, 1);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-	    $response = curl_exec($ch);
+	    $output = curl_exec($ch);
 	    curl_close($ch);
-	    return $response;
+
+	    return $output;
 	}
 
 	//Card Payment. White Labelled.
