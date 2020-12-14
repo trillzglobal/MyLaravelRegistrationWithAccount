@@ -87,7 +87,7 @@ class UserInformationController extends Controller
     {
         $userid = $request->user()->userid;
 
-        $mno = ["airtel"=>1,"mtn"=>2, "glo"=>3,"etisalat"=>4];
+        $mno = ["airtel"=>"1","mtn"=>"2", "glo"=>"3","etisalat"=>"4"];
 
         $sum_sales = $sum_incentive = [];
         foreach($mno as $key=>$m)
