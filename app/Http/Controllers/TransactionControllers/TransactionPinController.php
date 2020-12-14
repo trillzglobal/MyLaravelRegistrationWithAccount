@@ -64,7 +64,7 @@ class TransactionPinController extends Controller
 
 		//Subtract Payment and Calculate Commission
 
-		$comm = Commission::where("userid", $userid)->first();
+		$comm = Commission::first();
 		$uComm = $comm->commission_balance;
 
 		$final_balance = $init_balance - $total;
