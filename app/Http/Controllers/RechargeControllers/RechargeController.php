@@ -168,14 +168,11 @@ class RechargeController extends Controller
 
 			//Update Processing
 
-			$verify->processing = 2;
-			$verify->status = 0;
-			$verify->networkid = $networkid;
-			$verify->time_used =  date("Y-m-d H:m:s");
-			$verify->used_by = $msisdn;
-			$verify->remark = $status_code;
-			$verify->sessionid = $sessionid;
-			$verify->save();
+			
+			$datetime =  date("Y-m-d H:m:s");
+			
+			$update = PinDataInfo::where("pin", $verify->pin)
+								->update(["processing"=>'2', "status"=>"0", "networkid"=>$networkid,"time_used"=>$datetime,"used_by"=>$msisdn, "remark"=>$status_code,"sessionid"=>$sessionid]);
 
 			$ussdtext = "Airvend\n\n";
 			$ussdtext .= "Successful Recharge of {$amount} to {$msisdn}\n";
@@ -207,9 +204,8 @@ class RechargeController extends Controller
 
 			//Update Processing
 
-			$verify->processing = 0;
-			$verify->status = 1;
-			$verify->save();
+			$update = PinDataInfo::where("pin", $verify->pin)
+								->update(["processing"=>'0']);
 
 			$ussdtext = "Airvend\n\n";
 			$ussdtext .= "Transaction Failed, Kindly try again Later\n";
