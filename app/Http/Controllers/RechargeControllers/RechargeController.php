@@ -175,7 +175,7 @@ class RechargeController extends Controller
 			$verify->used_by = $msisdn;
 			$verify->remark = $status_code;
 			$verify->sessionid = $sessionid;
-			$verify->push();
+			$verify->save();
 
 			$ussdtext = "Airvend\n\n";
 			$ussdtext .= "Successful Recharge of {$amount} to {$msisdn}\n";
@@ -209,7 +209,7 @@ class RechargeController extends Controller
 
 			$verify->processing = 0;
 			$verify->status = 1;
-			$verify->push();
+			$verify->save();
 
 			$ussdtext = "Airvend\n\n";
 			$ussdtext .= "Transaction Failed, Kindly try again Later\n";
