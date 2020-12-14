@@ -63,7 +63,7 @@ class UserInformationController extends Controller
     	//Get User Details
     	$userid = $request->user()->userid;
 
-    	$transactions = TransactionTable::where("userid", $userid)
+    	$transactions = TransactionTable::where("userid", $userid)->
                                             where("status", "0")->get();
 
 
