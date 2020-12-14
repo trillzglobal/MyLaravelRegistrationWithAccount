@@ -59,8 +59,8 @@ class PayantCallController extends Controller
 
 	public function reserveAccountPayant($details){
 	    $url = "http://api.airvendng.net/payantConnect/reserveAccount/"; //Your Serverside url
-	    $appID = "001"; //ID set on ra_vendors
-	    $hashKey="123412341234"; //HASH set on ra_Vendor
+	    $appID = "004"; //ID set on ra_vendors
+	    $hashKey="CPL88F1B23F1A2BFD9234425F59390A9C58AEFDA6336983E982F79DF71C1BA5676B"; //HASH set on ra_Vendor
 	    
 	    $content =  json_encode($details);
 

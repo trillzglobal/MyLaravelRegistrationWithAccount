@@ -30,9 +30,9 @@ class ApiController extends Controller
 	        $response = (new PayantCallController)->reserveAccountPayant($detail);
 	        $output = json_decode($response, true);
 
-	        if($output['status'] == 200){
+	        if($output['confirmationCode'] == 200){
 
-		        $resp['account_number'] = $output['accountNumber'];
+		        $resp['account_number'] = $output['details']['accountNumber'];
 		        $resp['bank_name'] = "STERLING BANK";
 
 		    }
