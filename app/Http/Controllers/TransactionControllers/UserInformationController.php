@@ -87,25 +87,22 @@ class UserInformationController extends Controller
     {
         $userid = $request->user()->userid;
 
-        $mno = ["airtel"=>"1","mtn"=>"2", "glo"=>"3","etisalat"=>"4"];
+        $mno = ["airtel"=>1,"mtn"=>2, "glo"=>3,"etisalat"=>4];
 
         $sum_sales = $sum_incentive = [];
         foreach($mno as $key=>$m)
         {
-            $sum_mno = \DB::table('transaction_tables')
-                                        ->where('userid', $userid)
+            $sum_mno = TransactionTable::where('userid', $userid)
                                         ->where('status',0)
                                         ->where('networkid', $m)
                                         ->where('created_at', '>=', date('Y-m'))
-                                        ->sum("transaction_tables.amount");
-            
+                                        ->sum('amount');
+
             $sum_sales[$key] = $sum_mno;
-            $sum_inc = \DB::table('transaction_tables')
-                                        ->where('userid', $userid)
+            $sum_inc = TransactionTable::where('userid', $userid)
                                         ->where('status',0)
-                                        ->where('networkid', $m)
                                         ->where('created_at', '>=', date('Y-m'))
-                                        ->sum("transaction_tables.incentive");
+                                        ->sum('incentive');
 
             $sum_incentive[$key] = $sum_inc;
         }
