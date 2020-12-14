@@ -95,14 +95,14 @@ class UserInformationController extends Controller
             $sum_mno = TransactionTable::where('userid', $userid)
                                         ->where('status',0)
                                         ->where('networkid', $m)
-                                        ->where('created_at', '>=', date('Y-m-d'))
+                                        ->where('created_at', '>=', date('Y-m-'))
                                         ->sum('amount');
 
             $sum_sales[$key] = $sum_mno;
             $sum_inc = TransactionTable::where('userid', $userid)
                                         ->where('status',0)
                                         ->where('networkid', $m)
-                                        ->where('created_at', '>=', date('Y-m-d'))
+                                        ->where('created_at', '>=', date('Y-m-'))
                                         ->sum('incentive');
 
             $sum_incentive[$key] = $sum_inc;
