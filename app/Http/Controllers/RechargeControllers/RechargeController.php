@@ -200,6 +200,7 @@ class RechargeController extends Controller
 			$vend->status = $status_code;
 			$vend->product_code = $type;
 			$vend->ref_tag = $ref_tag;
+			$vend->et = $et;
 
 			$vend->save();
 
