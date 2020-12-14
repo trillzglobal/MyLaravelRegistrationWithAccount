@@ -100,6 +100,8 @@ class UserInformationController extends Controller
 
             $sum_sales[$key] = $sum_mno;
             $sum_inc = TransactionTable::where('userid', $userid)
+                                        ->where('status',0)
+                                        ->where('networkid', $m)
                                         ->sum('incentive');
 
             $sum_incentive[$key] = $sum_inc;
