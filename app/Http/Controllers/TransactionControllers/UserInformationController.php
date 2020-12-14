@@ -87,7 +87,7 @@ class UserInformationController extends Controller
     {
         $userid = $request->user()->userid;
 
-        $mno = ["airtel"=>1,"mtn"=>2, "glo"=>3,"9mobile"=>4];
+        $mno = ["airtel"=>1,"mtn"=>2, "glo"=>3,"etisalat"=>4];
 
         $sum_sales = $sum_incentive = [];
         foreach($mno as $key=>$m)
@@ -96,7 +96,6 @@ class UserInformationController extends Controller
                                         ->where('status',0)
                                         ->where('networkid', $m)
                                         ->where('created_at', '>=', date('Y-m'))
-                                        ->where('created_at', '<', date('Y-m', strtotime("+1 month")))
                                         ->sum('amount');
 
             $sum_sales[$key] = $sum_mno;
@@ -104,7 +103,6 @@ class UserInformationController extends Controller
                                         ->where('status',0)
                                         ->where('networkid', $m)
                                         ->where('created_at', '>=', date('Y-m'))
-                                        ->where('created_at', '<', date('Y-m', strtotime("+1 month")))
                                         ->sum('incentive');
 
             $sum_incentive[$key] = $sum_inc;
