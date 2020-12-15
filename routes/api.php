@@ -18,7 +18,7 @@ Route::middleware('storeRequest')->group(function(){
         return $request->user();
     });
 
-    Route::get('/direct/wallet/funding', [App\Http\Controllers\WebhookResponseControllers\WebhookResponseController::class, 'connectPayant'])->name('/direct/wallet/funding'); //Done Direct Wallet Funding Callback
+    Route::any('direct/wallet/funding', [App\Http\Controllers\WebhookResponseControllers\WebhookResponseController::class, 'connectPayant'])->name('/direct/wallet/funding'); //Done Direct Wallet Funding Callback
 
     Route::any('/ussd/v1/request', [App\Http\Controllers\RechargeControllers\RechargeController::class, 'Recharge']);
 
