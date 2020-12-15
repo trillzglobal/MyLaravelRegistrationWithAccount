@@ -32,9 +32,13 @@ class WebhookResponseController extends Controller
 		if($verify){
 			return response()->json(["status"=>"Transaction Treated"], 300);
 		}
+
+		$user = User::where("user_account", $accountNumber)->first();
+
+
 		WebhookResponse::create([
 			"amount" => $amountPaid,
-    		"userid" => $accountReference,
+    		"userid" => $user->userid,
     		"response" => $request,
     		"method" => $paymentDescription,
     		"paidon"=> $paidOn,
@@ -43,12 +47,13 @@ class WebhookResponseController extends Controller
 		]);
 
 		//Get User with Account Details
-		$userD = User::where("user_account", $accountNumber)->get();
-		$user = $userD[0];
+		
 
-		$wallet = Wallet::where("userid", $user->userid)->get();
 
-		Wallet::where("userid", $user->userid)->update(["wallet_balance"=>$amountPaid + $wallet[0]['wallet_balance'] ]);
+		$wallet = Wallet::where("userid", $user->userid)->first();
+		$amt = $amountPaid + $wallet->wallet_balance; 
+
+		Wallet::where("userid", $user->userid)->update(["wallet_balance"=>$amt]);
 		return response()->json(["status"=>"successful"], 200);
 		
     }
