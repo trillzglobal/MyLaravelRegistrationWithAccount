@@ -26,7 +26,7 @@ class WebhookResponseController extends Controller
 		$accountNumber = $request->accountNumber;
 		$paymentDescription = 'Direct Account';
 
-		print_r($accountNumber);
+		
 		
 		//Log Payment To Table
 		$verify = WebhookResponse::firstWhere("exchanger_reference", $paymentReference);
@@ -36,8 +36,7 @@ class WebhookResponseController extends Controller
 
 		$user = User::where("user_account", $accountNumber)->first();
 
-		print_r($user);
-		exit();
+
 		WebhookResponse::create([
 			"amount" => $amountPaid,
     		"userid" => $user->userid,
