@@ -17,7 +17,8 @@ class WebhookResponseController extends Controller
     public function connectPayant(Request $request)
     {
     	
-    	
+    	print_r($request);
+    	exit();
 		$paymentReference = $request->transactionReference;
 		$amountPaid = $request->amountPaid;
 		$paidOn = $request->date;
