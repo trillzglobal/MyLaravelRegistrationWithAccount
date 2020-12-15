@@ -40,7 +40,7 @@ class WebhookResponseController extends Controller
 		WebhookResponse::create([
 			"amount" => $amountPaid,
     		"userid" => $user->userid,
-    		"response" => $request,
+    		"response" => $request->getContent(),
     		"method" => $paymentDescription,
     		"paidon"=> $paidOn,
     		"status"=> $paymentStatus,
