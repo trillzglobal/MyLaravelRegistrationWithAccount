@@ -17,13 +17,15 @@ class WebhookResponseController extends Controller
     public function connectPayant(Request $request)
     {
     	
+    	$data = $request->getContent();
+    	$data = json_decode($data, true);
     	
-		$paymentReference = $request->transactionReference;
-		$amountPaid = $request->amountPaid;
-		$paidOn = $request->date;
+		$paymentReference = $data['transactionReference'];
+		$amountPaid = $data['amountPaid'];
+		$paidOn = $data['date'];
 		$paymentStatus ='1';
-		$accountReference = $request->customerReference;
-		$accountNumber = $request->accountNumber;
+		$accountReference = $data['customerReference'];
+		$accountNumber = $data['accountNumber'];
 		$paymentDescription = 'Direct Account';
 
 		
@@ -40,6 +42,7 @@ class WebhookResponseController extends Controller
 		WebhookResponse::create([
 			"amount" => $amountPaid,
     		"userid" => $user->userid,
+    		"email"=> $user->email,
     		"response" => $request->getContent(),
     		"method" => $paymentDescription,
     		"paidon"=> $paidOn,
