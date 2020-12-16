@@ -38,8 +38,7 @@ class User extends Authenticatable
         "avatar"
     ];
 
-    protected $dateFormat = 'U';
-    
+    protected $dateFormat = 'Y-m-d H:i:s';    
     /**
      * The attributes that should be hidden for arrays.
      *

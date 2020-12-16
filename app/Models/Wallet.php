@@ -17,5 +17,5 @@ class Wallet extends Model
     	'incentive_balance'
     ];
 
-    protected $dateFormat = 'U';
+    protected $dateFormat = 'Y-m-d H:i:s';
 }

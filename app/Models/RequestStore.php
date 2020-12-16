@@ -15,5 +15,5 @@ class RequestStore extends Model
     ];
 
 
-    protected $dateFormat = 'U';
+    protected $dateFormat = 'Y-m-d H:i:s';
 }

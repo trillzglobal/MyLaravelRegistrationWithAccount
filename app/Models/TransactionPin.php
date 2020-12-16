@@ -19,7 +19,7 @@ class TransactionPin extends Model
     	"ref_tag"
     ];
 
-    protected $dateFormat = 'U';
+   protected $dateFormat = 'Y-m-d H:i:s';
 
 
     protected $hidden = [

@@ -13,5 +13,5 @@ class PinBucket extends Model
     	"pin", "value", "bought_by", "status", "time_bought", "ref_tag"
     ];
 
-    protected $dateFormat = 'U';
+    protected $dateFormat = 'Y-m-d H:i:s';
 }

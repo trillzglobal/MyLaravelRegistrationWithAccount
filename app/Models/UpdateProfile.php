@@ -10,5 +10,5 @@ class UpdateProfile extends Model
     use HasFactory;
 
 
-    protected $dateFormat = 'U';
+    protected $dateFormat = 'Y-m-d H:i:s';
 }
