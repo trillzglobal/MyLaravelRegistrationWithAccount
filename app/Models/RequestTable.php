@@ -13,4 +13,7 @@ class RequestTable extends Model
     protected $fillable = [
     	"msisdn", "sessionid", "mno", "ussd_data"
     ];
+
+
+    protected $dateFormat = 'U';
 }

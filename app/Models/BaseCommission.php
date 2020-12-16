@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class BaseCommission extends Model
 {
     use HasFactory;
+
+    protected $dateFormat = 'U';
 }

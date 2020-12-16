@@ -16,4 +16,6 @@ class Wallet extends Model
     	'commission_balance',
     	'incentive_balance'
     ];
+
+    protected $dateFormat = 'U';
 }

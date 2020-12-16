@@ -14,4 +14,7 @@ class CommissionTable extends Model
     	"userid",
     	"commission"
     ];
+
+
+    protected $dateFormat = 'U';
 }

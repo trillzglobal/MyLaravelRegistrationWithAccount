@@ -15,4 +15,7 @@ class IncentiveTable extends Model
     	"incentive",
     	"networkid"
     ];
+
+
+    protected $dateFormat = 'U';
 }

@@ -13,4 +13,7 @@ class RequestStore extends Model
     protected $fillable = [
     	"request", "ip", "device", "endpoint", "response"
     ];
+
+
+    protected $dateFormat = 'U';
 }

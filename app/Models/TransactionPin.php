@@ -19,6 +19,9 @@ class TransactionPin extends Model
     	"ref_tag"
     ];
 
+    protected $dateFormat = 'U';
+
+
     protected $hidden = [
 
     	"updated_at"

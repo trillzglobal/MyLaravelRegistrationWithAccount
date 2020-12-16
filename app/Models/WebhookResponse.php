@@ -23,4 +23,7 @@ class WebhookResponse extends Model
     		];
 
 
+    protected $dateFormat = 'U';
+
+
 }

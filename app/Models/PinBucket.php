@@ -12,4 +12,6 @@ class PinBucket extends Model
     protected $fillable =[
     	"pin", "value", "bought_by", "status", "time_bought", "ref_tag"
     ];
+
+    protected $dateFormat = 'U';
 }

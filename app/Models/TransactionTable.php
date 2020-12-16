@@ -17,6 +17,8 @@ class TransactionTable extends Model
 
     ];
 
+    protected $dateFormat = 'U';
+
     protected $hidden =[
     	"updated_at",
     	"response"
