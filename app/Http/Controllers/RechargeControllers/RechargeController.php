@@ -48,7 +48,7 @@ class RechargeController extends Controller
 		$request->save();
 
 		//Validate if USSD is upto Required Number of String
-		if(strlen($input) != 12){
+		if(strlen($input) != 16 && strlen($input) != 12){
 
 			$ussdtext = "Airvend 174\n\n";
 			$ussdtext .= "Pin Lenght is Incorrect\n";
