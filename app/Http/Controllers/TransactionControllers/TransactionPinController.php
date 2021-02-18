@@ -139,8 +139,8 @@ class TransactionPinController extends Controller
 
 	private function randomPin(){
 	
-		$min=100000000000;
-		$max = 999999999999;
+		$min=1000000000000000;
+		$max = 9999999999999999;
 	    $pin = random_int($min,$max);
 
 	    return $pin;
