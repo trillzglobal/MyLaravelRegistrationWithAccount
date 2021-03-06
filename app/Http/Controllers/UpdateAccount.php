@@ -21,7 +21,7 @@ class UpdateAccount extends Controller
                     'phone_number'=>$user->phone_number
                 ];
             $output = $vas->createAccount($payload);
-            $output = $vas->createAccount($payload);
+            
         	if($output == false)return response()->json(["status"=>"error", "error"=>"Can't Create account at the moment"],200);
 
             User::where("id",$user->id)
