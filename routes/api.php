@@ -54,5 +54,6 @@ Route::middleware('storeRequest')->group(function(){
     Route::any('/', [App\Http\Controllers\ApiAuthController::class, 'index']);
     Route::any('/api/forgot/password', [App\Http\Controllers\ApiAuthController::class, 'forgot']);
     Route::put('/reset/password', [App\Http\Controllers\ApiAuthController::class, 'reset']);
+    Route::get('/update/account', [App\Http\Controllers\UpdateAccount::class, 'updateAccount']);
 
 });
