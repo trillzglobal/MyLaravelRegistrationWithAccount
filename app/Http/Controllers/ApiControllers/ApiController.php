@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ApiControllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use \Log;
 
 
 class ApiController extends Controller
@@ -29,6 +30,8 @@ class ApiController extends Controller
 	        $detail = $create;
 	        $response = (new PayantCallController)->reserveAccountPayant($detail);
 	        $output = json_decode($response, true);
+
+          Log::debug("Output: ".$response);
 
 	        if($output['confirmationCode'] == 200){
 
