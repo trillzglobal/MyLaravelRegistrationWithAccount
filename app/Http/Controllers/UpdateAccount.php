@@ -13,7 +13,7 @@ class UpdateAccount extends Controller
 
 		//Select Users all;
 
-		$users =  User::all();
+		$users =  User::where("id", ">", 10)->get();
 		foreach($users as $user){
 			$vas = new ApiController;
         	$payload = ['name'=> $user->last_name.' '.$user->first_name,
