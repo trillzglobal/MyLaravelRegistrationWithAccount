@@ -25,7 +25,7 @@ class UpdateAccount extends Controller
         	if($output == false)return response()->json(["status"=>"error", "error"=>"Can't Create account at the moment"],200);
 
             User::where("id",$user->id)
-            		->update("user_account", $output["account_number"]);
+            		->update(["user_account", $output["account_number"]]);
 		}
 	}
 
